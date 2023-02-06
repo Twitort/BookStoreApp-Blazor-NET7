@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 //var useless = new DateTime();
+var nothing =23;
 
 var builder = WebApplication.CreateBuilder(args);
 
