@@ -3,6 +3,8 @@ using BookStoreApp.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
+var useless = new DateTime();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
