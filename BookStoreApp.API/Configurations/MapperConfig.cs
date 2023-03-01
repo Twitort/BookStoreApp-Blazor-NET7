@@ -8,7 +8,11 @@ namespace BookStoreApp.API.Configurations
 	{
 		public MapperConfig()
 		{
+			// Create a mapping (using AutoMapper) to and from AuthorCreateDTO and Author.
+			// ReverseMap is what give use the bidirectional mapping support:
 			CreateMap<AuthorCreateDTO, Author>().ReverseMap();
+			CreateMap<AuthorSelectDTO, Author>().ReverseMap();
+			CreateMap<AuthorUpdateDTO, Author>().ReverseMap();
 		}
 	}
 }
