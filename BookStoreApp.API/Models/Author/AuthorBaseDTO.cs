@@ -1,7 +1,6 @@
 ﻿namespace BookStoreApp.API.Models.Author
 {
-	public abstract class AuthorBaseDTO
+	public abstract class AuthorBaseDTO : BaseDTO
 	{
-		public int Id { get; set; }
 	}
 }
