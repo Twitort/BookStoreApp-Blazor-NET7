@@ -1,0 +1,59 @@
+﻿@page "/users/login"
+@inject IAuthenticationService authService
+
+<h3>Login</h3>
+
+<div>
+    <EditForm Model="LoginModel" OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <InputText class="form-control" @bind-Value="LoginModel.Email" />
+            <ValidationMessage For="@(() => LoginModel.Email)" />
+        </div>
+        <div class="form-group">
+            <label for="email">Password</label>
+            <InputText type="password" class="form-control" @bind-Value="LoginModel.Password" />
+            <ValidationMessage For="@(() => LoginModel.Password)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </EditForm>
+
+</div>
+
+@code {
+    LoginUserDTO LoginModel = new LoginUserDTO();
+    string message = string.Empty;
+
+    public async Task HandleLogin()
+    {
+        try
+        {
+            var response = await authService.AuthenticateAsync(LoginModel);
+
+            if (response)
+            {
+
+            }
+            else
+            {
+                message = "Invalid username or password";
+            }
+        }
+        catch (ApiException ex)
+        {
+            // If status in the 200s, it is successful, navigate to login page,
+            // otherwise raise error:
+            if (ex.StatusCode >= 200 && ex.StatusCode <= 299)
+            {
+            }
+            message = ex.Response;
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+        }
+    }
+}
