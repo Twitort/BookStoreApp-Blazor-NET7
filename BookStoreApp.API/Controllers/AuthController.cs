@@ -102,7 +102,7 @@ namespace BookStoreApp.API.Controllers
 				};
 
 				logger.LogInformation($"Successful login: {liUserDTO.Email}");
-				return Ok(Accepted(response));
+				return Ok(response);
 			}
 			catch (Exception ex)
 			{

@@ -1,5 +1,6 @@
 ﻿@page "/users/login"
 @inject IAuthenticationService authService
+@inject NavigationManager navManager
 
 <h3>Login</h3>
 
@@ -12,11 +13,13 @@
             <InputText class="form-control" @bind-Value="LoginModel.Email" />
             <ValidationMessage For="@(() => LoginModel.Email)" />
         </div>
+        <br/>
         <div class="form-group">
             <label for="email">Password</label>
             <InputText type="password" class="form-control" @bind-Value="LoginModel.Password" />
             <ValidationMessage For="@(() => LoginModel.Password)" />
         </div>
+        <br />
 
         <button type="submit" class="btn btn-primary btn-block">Login</button>
     </EditForm>
@@ -35,7 +38,7 @@
 
             if (response)
             {
-
+                navManager.NavigateTo("/");
             }
             else
             {

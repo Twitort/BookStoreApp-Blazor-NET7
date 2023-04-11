@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -39,7 +40,7 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
         }
 
         // Pull out the claims from the token:
-        var claims = tokenContent.Claims;
+        var claims = await GetClaims();
 
         user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwtAuthentication"));
         
@@ -49,9 +50,7 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
     public async Task LoggedIn()
     {
         // Get the token info (similar to the GetAuthenticationStateAsync method):
-        var savedToken = await _localStorage.GetItemAsync<string>("accessToken");
-        var tokenContent = _jwtSecurityTokenHandler.ReadJwtToken(savedToken);
-        var claims = tokenContent.Claims;
+        var claims = await GetClaims();
         var user = new ClaimsPrincipal(new ClaimsIdentity(claims, "jwtAuthentication"));
         var authSate = Task.FromResult(new AuthenticationState(user));
 
@@ -70,4 +69,13 @@ public class ApiAuthenticationStateProvider : AuthenticationStateProvider
         NotifyAuthenticationStateChanged(authSate);
     }
 
+    private async Task<List<Claim>> GetClaims()
+    {
+        var savedToken = await _localStorage.GetItemAsync<string>("accessToken");
+        var tokenContent = _jwtSecurityTokenHandler.ReadJwtToken(savedToken);
+        var claims = tokenContent.Claims.ToList();
+        claims.Add(new Claim(ClaimTypes.Name, tokenContent.Subject));
+
+        return claims;
+    }
 }
